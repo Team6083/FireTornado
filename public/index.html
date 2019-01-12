@@ -1,34 +1,57 @@
 <html>
 
 <head>
-  <title>123</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <!-- bootstrap & jquery-->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+  <!-- DataTables-->
+
+  <title>Index</title>
   <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-firestore.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyBdsKcG7NeEsqwKDZNX3NKVQPer9euzGx0",
-      authDomain: "overproperty-frc6083.firebaseapp.com",
-      databaseURL: "https://overproperty-frc6083.firebaseio.com",
-      projectId: "overproperty-frc6083",
-      storageBucket: "overproperty-frc6083.appspot.com",
-      messagingSenderId: "115432376160"
-    };
-    firebase.initializeApp(config);
-
-    // Initialize Cloud Firestore through Firebase
-    var db = firebase.firestore();
-
-    // Disable deprecated features
-    db.settings({
-      timestampsInSnapshots: true
-    });
-  </script>
   <script src="js/main.js"></script>
+  <script src="js/properties.js"></script>
+
 </head>
 
 <body>
+  <div id="navBarContainer"></div>
 
+  <div class="container-fluid">
+    <div class="row mt-5"></div>
+    <div class="row">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8 col-sm-12">
+        <table id="table_id" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Group</th>
+              <th>Type</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $("#navBarContainer").load("/navBar.html");
+  </script>
+
+  <script src="js/page/index.js"></script>
 </body>
 
 </html>
