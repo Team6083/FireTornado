@@ -1,6 +1,9 @@
 package model
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+)
 
 type Item struct {
 	Name        string `json:"name"`
@@ -29,4 +32,20 @@ func (database *Database) GetAllItem() ([]Item, error) {
 		return nil, err
 	}
 	return items, err
+}
+
+func (database *Database) SaveItem(item Item) (*mgo.ChangeInfo, error) {
+	info, err := database.DB.C("items").Upsert(bson.M{"name": item.Name}, item)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
+}
+
+func (database *Database) DeleteItem(item Item) error {
+	err := database.DB.C("items").Remove(bson.M{"name": item.Name})
+	if err != nil {
+		return err
+	}
+	return nil
 }
