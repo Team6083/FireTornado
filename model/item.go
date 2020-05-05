@@ -6,7 +6,7 @@ type Item struct {
 	Category    string `json:"category"`
 	Genre       int    `json:"genre"`
 	Quantity    int    `json:"quantity"`
-	Unit        int    `json:"unit"`
+	Unit        string `json:"unit"`
 	StoragePos  string `json:"storage_pos"`
 	Status      int    `json:"status"`
 }
