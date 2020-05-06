@@ -1,6 +1,7 @@
 package model
 
 import (
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -37,4 +38,20 @@ func (database *Database) GetAllUsers() ([]User, error) {
 		return nil, err
 	}
 	return users, nil
+}
+
+func (database *Database) SaveUser(user User) (*mgo.ChangeInfo, error) {
+	info, err := database.DB.C("users").UpsertId(user.Id, user)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
+}
+
+func (database *Database) DeleteUser(user User) error {
+	err := database.DB.C("users").RemoveId(user.Id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
