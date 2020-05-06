@@ -43,7 +43,7 @@ func (database *Database) SaveItem(item Item) (*mgo.ChangeInfo, error) {
 }
 
 func (database *Database) DeleteItem(item Item) error {
-	err := database.DB.C("items").Remove(bson.M{"name": item.Name})
+	err := database.DB.C("items").Remove(bson.M{"name": item.Name}) // TODO: don't use name
 	if err != nil {
 		return err
 	}
