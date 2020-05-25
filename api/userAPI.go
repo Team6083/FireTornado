@@ -6,7 +6,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func (web *Web) RouteHandler(router gin.Engine) {
+func (web *Web) RouteHandler(router *gin.Engine) {
 	usersGroup := router.Group("/user")
 	usersGroup.GET("/", web.APIReadUserById)
 	usersGroup.POST("/", web.APICreateUser)
@@ -19,13 +19,13 @@ func (web *Web) APICreateUser(c *gin.Context) {
 
 	err := c.ShouldBind(&user)
 	if err != nil {
-		panic(err) // TODO: don't use panic
+		panic(err)
 		return
 	}
 
 	create, err := web.DB.SaveUser(user)
 	if err != nil {
-		panic(err) // TODO: don't use panic
+		panic(err)
 		return
 	}
 
@@ -37,7 +37,7 @@ func (web *Web) APIReadUserById(c *gin.Context) {
 
 	read, err := web.DB.GetUserById(id)
 	if err != nil {
-		panic(err) // TODO: don't use panic
+		panic(err)
 		return
 	}
 
@@ -57,7 +57,7 @@ func (web *Web) APIUpdateUser(c *gin.Context) {
 
 	update, err := web.DB.SaveUser(user)
 	if err != nil {
-		panic(err) // TODO: don't use panic
+		panic(err)
 		return
 	}
 
@@ -69,7 +69,7 @@ func (web *Web) APIDeleteUser(c *gin.Context) {
 
 	err := web.DB.DeleteUser(model.User{Id: bson.ObjectIdHex(id)})
 	if err != nil {
-		panic(err) // TODO: don't use panic
+		panic(err)
 		return
 	}
 

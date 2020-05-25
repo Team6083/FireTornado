@@ -1,8 +1,11 @@
 package main
 
 import (
+	"FireTornado/api"
+	"FireTornado/model"
 	"crypto/tls"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
 	"net"
 )
@@ -29,5 +32,11 @@ func main() {
 	defer session.Close()
 	session.SetMode(mgo.Monotonic, true)
 
-	//db := model.Database{session, dialInfo, session.DB("firstMongo")}
+	db := model.Database{Session: session, DialInfo: dialInfo, DB: session.DB("firstMongo")}
+	web := api.Web{DB: &db}
+
+	engine := gin.New()
+	engine.Use(gin.Logger())
+
+	web.RouteHandler(engine)
 }
