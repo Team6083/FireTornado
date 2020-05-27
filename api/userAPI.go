@@ -6,12 +6,12 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func (web *Web) RouteHandler(router *gin.Engine) {
+func (web *Web) UserRouteHandler(router *gin.Engine) {
 	usersGroup := router.Group("/user")
-	usersGroup.GET("/", web.APIReadUserById)
-	usersGroup.POST("/", web.APICreateUser)
-	usersGroup.PUT("/", web.APIUpdateUser)
-	usersGroup.DELETE("/", web.APIDeleteUser)
+	usersGroup.GET("", web.APIReadUser)
+	usersGroup.POST("", web.APICreateUser)
+	usersGroup.PUT("", web.APIUpdateUser)
+	usersGroup.DELETE("", web.APIDeleteUser)
 }
 
 func (web *Web) APICreateUser(c *gin.Context) {
@@ -32,7 +32,7 @@ func (web *Web) APICreateUser(c *gin.Context) {
 	c.JSON(201, create)
 }
 
-func (web *Web) APIReadUserById(c *gin.Context) {
+func (web *Web) APIReadUser(c *gin.Context) {
 	id := c.Query("id")
 
 	read, err := web.DB.GetUserById(id)
@@ -73,5 +73,5 @@ func (web *Web) APIDeleteUser(c *gin.Context) {
 		return
 	}
 
-	c.Writer.WriteHeader(204)
+	c.Status(200)
 }
