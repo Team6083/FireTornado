@@ -32,16 +32,26 @@ func (web *Web) APICreateUser(c *gin.Context) {
 	c.JSON(201, create)
 }
 
-func (web *Web) APIReadUser(c *gin.Context) {
-	id := c.Query("id")
-
-	read, err := web.DB.GetUserById(id)
+func (web *Web) APIReadUsers(c *gin.Context) {
+	users, err := web.DB.GetAllUsers()
 	if err != nil {
 		panic(err)
 		return
 	}
 
-	c.JSON(200, read)
+	c.JSON(200, users)
+}
+
+func (web *Web) APIReadUser(c *gin.Context) {
+	id := c.Query("id")
+
+	user, err := web.DB.GetUserById(id)
+	if err != nil {
+		panic(err)
+		return
+	}
+
+	c.JSON(200, user)
 }
 
 func (web *Web) APIUpdateUser(c *gin.Context) {
