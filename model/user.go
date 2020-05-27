@@ -9,7 +9,7 @@ type User struct {
 	Name            string        `json:"name"`
 	Email           string        `json:"email"`
 	Password        string        `json:"password"`
-	Id              bson.ObjectId `bson:"id, omitempty" json:"id"`
+	Id              bson.ObjectId `bson:"_id,omitempty" json:"id"`
 	PermissionLevel int           `json:"permission_level"`
 }
 
