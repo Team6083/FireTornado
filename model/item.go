@@ -6,19 +6,20 @@ import (
 )
 
 type Item struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Category    string `json:"category"`
-	Genre       int    `json:"genre"`
-	Quantity    int    `json:"quantity"`
-	Unit        string `json:"unit"`
-	StoragePos  string `json:"storage_pos"`
-	Status      int    `json:"status"`
+	Name        string        `json:"name"`
+	Description string        `json:"description"`
+	Category    string        `json:"category"`
+	Genre       int           `json:"genre"`
+	Quantity    int           `json:"quantity"`
+	Unit        string        `json:"unit"`
+	StoragePos  string        `json:"storage_pos"`
+	Status      int           `json:"status"`
+	Id          bson.ObjectId `bson:"_id,omitempty" json:"id"`
 }
 
-func (database *Database) GetItemByName(name string) (*Item, error) {
+func (database *Database) GetItemById(id string) (*Item, error) {
 	item := Item{}
-	err := database.DB.C("items").Find(bson.M{"name": name}).One(&item)
+	err := database.DB.C("items").FindId(id).One(&item)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +35,7 @@ func (database *Database) GetAllItem() ([]Item, error) {
 	return items, err
 }
 
-func (database *Database) SaveItem(item Item) (*mgo.ChangeInfo, error) {
+func (database *Database) SaveItem(item *Item) (*mgo.ChangeInfo, error) {
 	info, err := database.DB.C("items").Upsert(bson.M{"name": item.Name}, item)
 	if err != nil {
 		return nil, err
