@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Connection start")
+	fmt.Println("Starting to connect")
 
-	dialInfo, _ := mgo.ParseURL("firstmongo-shard-00-01-3qdnz.mongodb.net:27017,firstmongo-shard-00-02-3qdnz.mongodb.net:27017")
+	dialInfo, _ := mgo.ParseURL("firstmongo-shard-00-01-3qdnz.mongodb.net:27017")
 
 	config := &tls.Config{}
 
@@ -32,11 +32,19 @@ func main() {
 	defer session.Close()
 	session.SetMode(mgo.Monotonic, true)
 
+	// db & web setting
 	db := model.Database{Session: session, DialInfo: dialInfo, DB: session.DB("firstMongo")}
 	web := api.Web{DB: &db}
 
 	engine := gin.New()
 	engine.Use(gin.Logger())
 
-	web.RouteHandler(engine)
+	// use route handlers
+	web.UserRouteHandler(engine)
+
+	// listen and serve
+	if err = engine.Run(); err != nil {
+		panic(err)
+		return
+	}
 }
