@@ -41,6 +41,7 @@ func main() {
 
 	// use route handlers
 	web.UserRouteHandler(engine)
+	web.ItemRouteHandler(engine)
 
 	// listen and serve
 	if err = engine.Run(); err != nil {
