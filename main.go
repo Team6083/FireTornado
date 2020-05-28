@@ -8,12 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
 	"net"
+	"os"
 )
 
 func main() {
 	fmt.Println("Starting to connect")
 
-	dialInfo, _ := mgo.ParseURL("firstmongo-shard-00-01-3qdnz.mongodb.net:27017")
+	// dialInfo setting
+	dialInfo, _ := mgo.ParseURL(os.Getenv("uri"))
 
 	config := &tls.Config{}
 
@@ -22,6 +24,10 @@ func main() {
 		return connection, err
 	}
 
+	dialInfo.Username = os.Getenv("user")
+	dialInfo.Password = os.Getenv("pass")
+
+	// dial
 	session, err := mgo.DialWithInfo(dialInfo)
 	if err != nil {
 		panic(err)
@@ -33,9 +39,10 @@ func main() {
 	session.SetMode(mgo.Monotonic, true)
 
 	// db & web setting
-	db := model.Database{Session: session, DialInfo: dialInfo, DB: session.DB("firstMongo")}
+	db := model.Database{Session: session, DialInfo: dialInfo, DB: session.DB(os.Getenv("db"))}
 	web := api.Web{DB: &db}
 
+	// set up engine
 	engine := gin.New()
 	engine.Use(gin.Logger())
 
