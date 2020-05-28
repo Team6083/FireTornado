@@ -19,7 +19,7 @@ type Item struct {
 
 func (database *Database) GetItemById(id string) (*Item, error) {
 	item := Item{}
-	err := database.DB.C("items").FindId(id).One(&item)
+	err := database.DB.C("items").FindId(bson.ObjectIdHex(id)).One(&item)
 	if err != nil {
 		return nil, err
 	}
@@ -36,15 +36,15 @@ func (database *Database) GetAllItem() ([]Item, error) {
 }
 
 func (database *Database) SaveItem(item *Item) (*mgo.ChangeInfo, error) {
-	info, err := database.DB.C("items").Upsert(bson.M{"name": item.Name}, item)
+	info, err := database.DB.C("items").Upsert(bson.M{"_id": item.Id}, item)
 	if err != nil {
 		return nil, err
 	}
 	return info, nil
 }
 
-func (database *Database) DeleteItem(item Item) error {
-	err := database.DB.C("items").Remove(bson.M{"name": item.Name}) // TODO: don't use name
+func (database *Database) DeleteItem(id string) error {
+	err := database.DB.C("items").RemoveId(bson.ObjectIdHex(id))
 	if err != nil {
 		return err
 	}

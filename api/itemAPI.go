@@ -81,7 +81,7 @@ func (web *Web) APIUpdateItem(c *gin.Context) {
 func (web *Web) APIDeleteItem(c *gin.Context) {
 	id := c.Query("id")
 
-	err := web.DB.DeleteItem(model.Item{Id: bson.ObjectIdHex(id)})
+	err := web.DB.DeleteItem(id)
 	if err != nil {
 		panic(err)
 		return
