@@ -36,7 +36,7 @@ func (database *Database) GetAllItem() ([]Item, error) {
 }
 
 func (database *Database) SaveItem(item *Item) (*mgo.ChangeInfo, error) {
-	info, err := database.DB.C("items").Upsert(bson.M{"_id": item.Id}, item)
+	info, err := database.DB.C("items").UpsertId(item.Id, item)
 	if err != nil {
 		return nil, err
 	}
