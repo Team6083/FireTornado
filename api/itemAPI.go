@@ -9,7 +9,11 @@ import (
 
 func (web *Web) ItemRouteHandler(engine *gin.Engine) {
 	routerGroup := engine.Group("/item")
+	routerGroup.GET("", web.APIReadItem)
+	routerGroup.GET("/all", web.APIReadItems)
 	routerGroup.POST("", web.APICreateItem)
+	routerGroup.PUT("", web.APIUpdateItem)
+	routerGroup.DELETE("", web.APIDeleteItem)
 }
 
 func (web *Web) APICreateItem(c *gin.Context) {
@@ -29,7 +33,7 @@ func (web *Web) APICreateItem(c *gin.Context) {
 	c.JSON(201, change)
 }
 
-func (web *Web) APIReadAllItems(c *gin.Context) {
+func (web *Web) APIReadItems(c *gin.Context) {
 	items, err := web.DB.GetAllItem()
 	if err != nil {
 		panic(err)

@@ -9,6 +9,7 @@ import (
 func (web *Web) UserRouteHandler(router *gin.Engine) {
 	usersGroup := router.Group("/user")
 	usersGroup.GET("", web.APIReadUser)
+	usersGroup.GET("/all", web.APIReadUsers)
 	usersGroup.POST("", web.APICreateUser)
 	usersGroup.PUT("", web.APIUpdateUser)
 	usersGroup.DELETE("", web.APIDeleteUser)
