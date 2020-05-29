@@ -49,6 +49,7 @@ func main() {
 	// use route handlers
 	web.UserRouteHandler(engine)
 	web.ItemRouteHandler(engine)
+	web.TeapotRouteHandler(engine)
 
 	// listen and serve
 	if err = engine.Run(); err != nil {
