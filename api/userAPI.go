@@ -3,6 +3,7 @@ package api
 import (
 	"FireTornado/model"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -46,8 +47,17 @@ func (web *Web) APIReadUsers(c *gin.Context) {
 func (web *Web) APIReadUser(c *gin.Context) {
 	id := c.Query("id")
 
+	if !bson.IsObjectIdHex(id) {
+		c.Status(400)
+		return
+	}
+
 	user, err := web.DB.GetUserById(id)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			c.JSON(404, "user not found")
+			return
+		}
 		panic(err)
 		return
 	}
@@ -57,6 +67,11 @@ func (web *Web) APIReadUser(c *gin.Context) {
 
 func (web *Web) APIUpdateUser(c *gin.Context) {
 	id := c.Query("id")
+
+	if !bson.IsObjectIdHex(id) {
+		c.Status(400)
+		return
+	}
 
 	user := model.User{Id: bson.ObjectIdHex(id)}
 
@@ -78,8 +93,17 @@ func (web *Web) APIUpdateUser(c *gin.Context) {
 func (web *Web) APIDeleteUser(c *gin.Context) {
 	id := c.Query("id")
 
+	if !bson.IsObjectIdHex(id) {
+		c.Status(400)
+		return
+	}
+
 	err := web.DB.DeleteUser(model.User{Id: bson.ObjectIdHex(id)})
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			c.JSON(404, "item not found")
+			return
+		}
 		panic(err)
 		return
 	}

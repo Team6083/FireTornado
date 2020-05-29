@@ -46,10 +46,15 @@ func (web *Web) APIReadItems(c *gin.Context) {
 func (web *Web) APIReadItem(c *gin.Context) {
 	id := c.Query("id")
 
+	if !bson.IsObjectIdHex(id) {
+		c.Status(400)
+		return
+	}
+
 	item, err := web.DB.GetItemById(id)
 	if err != nil {
 		if err == mgo.ErrNotFound {
-			c.Status(404)
+			c.JSON(404, "item not found")
 			return
 		}
 		panic(err)
@@ -61,6 +66,11 @@ func (web *Web) APIReadItem(c *gin.Context) {
 
 func (web *Web) APIUpdateItem(c *gin.Context) {
 	id := c.Query("id")
+
+	if !bson.IsObjectIdHex(id) {
+		c.Status(400)
+		return
+	}
 
 	item := model.Item{Id: bson.ObjectIdHex(id)}
 
@@ -81,8 +91,17 @@ func (web *Web) APIUpdateItem(c *gin.Context) {
 func (web *Web) APIDeleteItem(c *gin.Context) {
 	id := c.Query("id")
 
+	if !bson.IsObjectIdHex(id) {
+		c.Status(400)
+		return
+	}
+
 	err := web.DB.DeleteItem(id)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			c.JSON(404, "item not found")
+			return
+		}
 		panic(err)
 		return
 	}
