@@ -35,6 +35,9 @@ func (web *Web) APICreateUser(c *gin.Context) {
 }
 
 func (web *Web) APIReadUsers(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
 	users, err := web.DB.GetAllUsers()
 	if err != nil {
 		panic(err)
@@ -45,6 +48,9 @@ func (web *Web) APIReadUsers(c *gin.Context) {
 }
 
 func (web *Web) APIReadUser(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
 	id := c.Query("id")
 
 	if !bson.IsObjectIdHex(id) {
