@@ -10,6 +10,7 @@ import (
 func (web *Web) ItemRouteHandler(engine *gin.Engine) {
 	routerGroup := engine.Group("/item")
 	routerGroup.GET("", web.APIReadItem)
+	routerGroup.GET("/group", web.APIReadItemsByCategory)
 	routerGroup.GET("/all", web.APIReadItems)
 	routerGroup.POST("", web.APICreateItem)
 	routerGroup.PUT("", web.APIUpdateItem)
@@ -38,6 +39,21 @@ func (web *Web) APIReadItems(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
 	items, err := web.DB.GetAllItem()
+	if err != nil {
+		panic(err)
+		return
+	}
+
+	c.JSON(200, items)
+}
+
+func (web *Web) APIReadItemsByCategory(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
+	name := c.Query("name")
+
+	items, err := web.DB.GetItemsByCategory(name)
 	if err != nil {
 		panic(err)
 		return

@@ -26,13 +26,22 @@ func (database *Database) GetItemById(id string) (*Item, error) {
 	return &item, nil
 }
 
+func (database *Database) GetItemsByCategory(categoryName string) ([]Item, error) {
+	var items []Item
+	err := database.DB.C("items").Find(bson.M{"category": categoryName}).All(&items)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 func (database *Database) GetAllItem() ([]Item, error) {
 	var items []Item
 	err := database.DB.C("items").Find(bson.M{}).All(&items)
 	if err != nil {
 		return nil, err
 	}
-	return items, err
+	return items, nil
 }
 
 func (database *Database) SaveItem(item *Item) (*mgo.ChangeInfo, error) {
