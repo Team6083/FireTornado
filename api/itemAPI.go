@@ -34,6 +34,9 @@ func (web *Web) APICreateItem(c *gin.Context) {
 }
 
 func (web *Web) APIReadItems(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
 	items, err := web.DB.GetAllItem()
 	if err != nil {
 		panic(err)
@@ -44,6 +47,9 @@ func (web *Web) APIReadItems(c *gin.Context) {
 }
 
 func (web *Web) APIReadItem(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
 	id := c.Query("id")
 
 	if !bson.IsObjectIdHex(id) {
