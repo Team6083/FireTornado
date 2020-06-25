@@ -26,6 +26,15 @@ func (database *Database) GetItemById(id string) (*Item, error) {
 	return &item, nil
 }
 
+func (database *Database) SearchItem(name string) ([]Item, error) {
+	var items []Item
+	err := database.DB.C("items").Find(bson.M{"name": name}).All(&items)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 func (database *Database) GetItemsByCategory(categoryName string) ([]Item, error) {
 	var items []Item
 	err := database.DB.C("items").Find(bson.M{"category": categoryName}).All(&items)

@@ -15,6 +15,7 @@ func (web *Web) ItemRouteHandler(engine *gin.Engine) {
 	routerGroup.POST("", web.APICreateItem)
 	routerGroup.PUT("", web.APIUpdateItem)
 	routerGroup.DELETE("", web.APIDeleteItem)
+	routerGroup.GET("/search", web.APISearchItem)
 }
 
 func (web *Web) APICreateItem(c *gin.Context) {
@@ -129,4 +130,16 @@ func (web *Web) APIDeleteItem(c *gin.Context) {
 	}
 
 	c.Status(200)
+}
+
+func (web *Web) APISearchItem(c *gin.Context) {
+	name := c.Query("name")
+
+	items, err := web.DB.SearchItem(name)
+	if err != nil {
+		panic(err)
+		return
+	}
+
+	c.JSON(200, items)
 }
