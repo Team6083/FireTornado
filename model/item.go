@@ -26,9 +26,12 @@ func (database *Database) GetItemById(id string) (*Item, error) {
 	return &item, nil
 }
 
-func (database *Database) SearchItem(name string) ([]Item, error) {
+func (database *Database) SearchItem(keyword string) ([]Item, error) {
 	var items []Item
-	err := database.DB.C("items").Find(bson.M{"name": name}).All(&items)
+
+	//database.DB.C("items").EnsureIndexKey(keyword)
+
+	err := database.DB.C("items").Find(bson.M{"name": bson.M{"$regex": keyword, "$options": "$i"}}).All(&items)
 	if err != nil {
 		return nil, err
 	}

@@ -133,9 +133,9 @@ func (web *Web) APIDeleteItem(c *gin.Context) {
 }
 
 func (web *Web) APISearchItem(c *gin.Context) {
-	name := c.Query("name")
+	keyword := c.Query("keyword")
 
-	items, err := web.DB.SearchItem(name)
+	items, err := web.DB.SearchItem(keyword)
 	if err != nil {
 		panic(err)
 		return
