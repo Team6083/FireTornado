@@ -133,6 +133,9 @@ func (web *Web) APIDeleteItem(c *gin.Context) {
 }
 
 func (web *Web) APISearchItem(c *gin.Context) {
+
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+
 	keyword := c.Query("keyword")
 
 	items, err := web.DB.SearchItem(keyword)
